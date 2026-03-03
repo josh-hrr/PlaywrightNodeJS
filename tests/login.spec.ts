@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Test Suite #1', () => {
-  test.beforeEach(({page}) => {
-    page.goto('/');
+  test.beforeEach(async ({page}) => {
+    await page.goto('/');
   })
 
   test('TC1 Login should run successfully', async ({page}) => {
