@@ -7,7 +7,7 @@ export default defineConfig({
   reporter: 'html',
   use: {
     baseURL: 'https://www.saucedemo.com',
-    headless: false,
+    headless: true,
     testIdAttribute: 'data-test',
     screenshot: 'on',
     trace: 'on-first-retry'
