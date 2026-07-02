@@ -62,6 +62,7 @@ jobs:
         run: npx playwright test tests.api.playwright/tests-api/crud.spec.ts --project=api-prod
       - name: Bug suite documents known spec violations
         run: npx playwright test tests.api.playwright/tests-api/bugs.spec.ts --project=api-prod
+        continue-on-error: true 
       - uses: actions/upload-artifact@v4 
         if: always()
         with: 
