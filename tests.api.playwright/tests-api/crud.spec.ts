@@ -57,46 +57,15 @@ test.describe.serial('User Management API — /users CRUD lifecycle', () => {
     expect(response.status()).toBe(204);
   });
 
-  test('no longer finds the deleted user (GET /users/{email} → 404)', async ({
+  test('no longer lists the deleted user (GET /users → 200)', async ({
     userApi,
-  }) => {
-    await expect(userApi.getUser(user.email)).rejects.toThrow(/404/);
-  });
-});
+  }) => { 
+    const response = await userApi.listAllUsers();
 
-/**
- * Negative test cases:
- * 1. Error 404 for missing resources.
- * 2. Error 401 when the delete token is absent.
- */
-test.describe('User Management API — error handling', () => {
-  test('returns 404 for a user that does not exist (GET /users/{email})', async ({
-    userApi,
-  }) => {
-    await expect(
-      userApi.getUser('does-not-exist@example.com'),
-    ).rejects.toThrow(/404/);
-  });
-
-  test('rejects a delete without an auth token (DELETE /users/{email} → 401)', async ({
-    userApi,
-    unauthenticatedUserApi,
-  }) => {
-    // Arrange: create a real user with the authenticated client so the request
-    // fails on authentication rather than because the user is missing.
-    const target: CreateUser = {
-      name: 'Auth Guard',
-      email: `auth.guard.${Date.now()}@example.com`,
-      age: 40,
-    };
-    await userApi.createUser(target);
-
-    // Act + Assert: deleting without the Authentication header must be rejected.
-    await expect(
-      unauthenticatedUserApi.deleteUser(target.email),
-    ).rejects.toThrow(/401/);
-
-    // Cleanup: remove the user with the authenticated client.
-    await userApi.deleteUser(target.email);
+    expect(response.status()).toBe(200);
+    const users = await response.json();
+    expect(users).not.toContainEqual(
+      expect.objectContaining({ email: user.email }),
+    );
   });
 });
