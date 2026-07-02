@@ -18,8 +18,16 @@ test.describe('Test Suite #1', () => {
 
     const loginBtn = page.getByRole('button', { name: 'Login' });
     await loginBtn.waitFor({ state: 'visible' })
-    await expect(loginBtn).toBeVisible()
+    await expect(loginBtn).toBeVisible() 
     await loginBtn.click()    
+
+    const productTitles = page.locator('.inventory_item_name');
+
+    const productTitlesArray = await productTitles.all()
+    for (const title of productTitlesArray) {
+      console.log("This is a  test:", title)
+    } 
+
 
     const hamburgerBtn = page.locator('#react-burger-menu-btn');
     await hamburgerBtn.waitFor({ state: 'visible' })

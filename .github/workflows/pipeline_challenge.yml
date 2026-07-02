@@ -1,0 +1,63 @@
+name: pipeline_challenge
+
+on:
+  push: 
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  api-dev:
+    runs-on: ubuntu-latest
+    env:
+      TEST_BASE_URL: http://localhost:3000/dev
+      TEST_AUTH_TOKEN: mysecrettoken
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4 
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci   
+      - run: docker run -d -p 3000:3000 ghcr.io/danielsilva-loanpro/sdet-interview-challenge:latest
+      - name: wait for API to be ready
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3000/dev/users && exit 0
+            sleep 2
+          done
+          echo "API did not become ready" && exit 1
+      - run: npx playwright test --project=api-dev
+      - uses: actions/upload-artifact@v4 
+        if: always()
+        with: 
+          name: playwright-report-dev
+          path: playwright-report/
+          retention-days: 30
+  api-prod:
+    runs-on: ubuntu-latest
+    env:
+      PROD_BASE_URL: http://localhost:3000/prod
+      PROD_AUTH_TOKEN: mysecrettoken
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4 
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci   
+      - run: docker run -d -p 3000:3000 ghcr.io/danielsilva-loanpro/sdet-interview-challenge:latest
+      - name: wait for API to be ready
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:3000/prod/users && exit 0
+            sleep 2
+          done
+          echo "API did not become ready" && exit 1
+      - run: npx playwright test --project=api-prod
+      - uses: actions/upload-artifact@v4 
+        if: always()
+        with: 
+          name: playwright-report-prod
+          path: playwright-report/
+          retention-days: 30
