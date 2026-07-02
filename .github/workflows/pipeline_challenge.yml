@@ -27,11 +27,7 @@ jobs:
             sleep 2
           done
           echo "API did not become ready" && exit 1
-      - name: Functional test suite  
-        run: npx playwright test tests.api.playwright/tests-api/crud.spec.ts --project=api-dev
-      - name: Bug suite documents known spec violations
-        run: npx playwright test tests.api.playwright/tests-api/bugs.spec.ts --project=api-dev
-        continue-on-error: true
+      - run: npx playwright test --project=api-dev
       - uses: actions/upload-artifact@v4 
         if: always()
         with: 
@@ -58,11 +54,7 @@ jobs:
             sleep 2
           done
           echo "API did not become ready" && exit 1
-      - name: Functional test suite  
-        run: npx playwright test tests.api.playwright/tests-api/crud.spec.ts --project=api-prod
-      - name: Bug suite documents known spec violations
-        run: npx playwright test tests.api.playwright/tests-api/bugs.spec.ts --project=api-prod
-        continue-on-error: true 
+      - run: npx playwright test --project=api-prod
       - uses: actions/upload-artifact@v4 
         if: always()
         with: 
