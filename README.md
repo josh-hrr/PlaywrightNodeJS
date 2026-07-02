@@ -10,18 +10,18 @@ discrepancies found along the way.
 
 | Deliverable | Description | Where to find it |
 |---|---|---|
-| **E2E Test Suite** | Source code for the end-to-end test suite | [tests.api.playwright/](tests.api.playwright/) — specs in [tests-api/](tests.api.playwright/tests-api/), API client (POM) in [PageObjects/userApiClient.ts](tests.api.playwright/PageObjects/userApiClient.ts), fixtures in [fixtures/userApiFixtures.ts](tests.api.playwright/fixtures/userApiFixtures.ts) |
+| **E2E Test Suite** | Source code for the end-to-end test suite | — Folder: [tests.api.playwright/](tests.api.playwright/) — specs: [tests-api/](tests.api.playwright/tests-api/) — API client (POM): [PageObjects/userApiClient.ts](tests.api.playwright/PageObjects/userApiClient.ts) Fixtures: [fixtures/userApiFixtures.ts](tests.api.playwright/fixtures/userApiFixtures.ts) |
 | **GitHub Actions Pipeline** | A working `.github/workflows/` configuration | [.github/workflows/pipeline_challenge.yml](.github/workflows/pipeline_challenge.yml) — parallel `api-dev` and `api-prod` jobs |
 | **Bugs Report** | File documenting the bugs discovered | [BUGS.md](BUGS.md) |
-| **Testing Report** | Reports produced by the test tool | Playwright HTML report in `playwright-report/` (run `npx playwright show-report`); uploaded per environment as CI artifacts `playwright-report-dev` / `playwright-report-prod` |
+| **Testing Report** | Reports produced by the test tool | Playwright HTML report in `playwright-report/` (run `npx playwright show-report`); uploaded per environment as CI artifacts in GitHub Actions `playwright-report-dev` / `playwright-report-prod` |
 
 ## Project layout
 
 ```
 tests.api.playwright/
 ├─ tests-api/
-│  ├─ crud.spec.ts        # Functional CRUD lifecycle (all green)
-│  └─ bugs.spec.ts        # Spec-violation tests (intentionally red — see BUGS.md)
+│  ├─ crud.spec.ts        # Functional CRUD lifecycle 
+│  └─ bugs.spec.ts        # Spec-violation tests (see BUGS.md)
 ├─ PageObjects/
 │  └─ userApiClient.ts    # API client / Page Object Model for /users
 ├─ fixtures/
@@ -36,7 +36,7 @@ playwright.config.ts      # api-dev / api-prod projects, dotenv wiring
 ## Prerequisites
 
 - Node.js 20+
-- Docker (to run the application under test)
+- Docker - to run the application under test
 
 ## Setup
 
@@ -91,3 +91,4 @@ npx playwright show-report
   evidence for the discrepancies described in [BUGS.md](BUGS.md). The CI dev and
   prod stages run in parallel so these expected failures never block either
   environment.
+stall
