@@ -41,10 +41,7 @@ HTTP 500
 ### Notes
 - `GET /users/{email}` for an **existing** user works correctly (`200`), so the
   fault is isolated to the *not-found* code path — the handler appears to
-  dereference a missing record instead of returning a controlled `404`.
-- Observed via **two** independent tests (the dedicated bug test and the CRUD
-  lifecycle's post-delete check), which is why the lifecycle now confirms
-  deletion through `GET /users` (the list endpoint) instead.
+  dereference a missing record instead of returning a controlled `404`. 
 
 ---
 
@@ -70,15 +67,13 @@ HTTP 401
 
 ### Actual
 ```
-HTTP 204                  # user is deleted despite no credentials
+HTTP Status code: 204                  
 ```
 
 ### Notes
 - The auth token is **not enforced at all** on delete. Because of this, the
-  "delete with a valid token → 204" case passes for the *wrong* reason (the
-  token is ignored), so it cannot be treated as evidence the auth works.
-- This is the highest-impact issue: any unauthenticated caller can delete any
-  user in any environment.
+  "delete with a valid token → 204" case passes for the *wrong* reason, so it cannot be treated as evidence the auth works.
+- This is the highest-impact issue.
 
 --- 
 
