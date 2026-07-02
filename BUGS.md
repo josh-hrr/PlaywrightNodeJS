@@ -61,8 +61,8 @@ HTTP 500
 
 ### Expected
 ```
-HTTP 401
-{ "error": "..." }        # authentication required or invalid
+HTTP Status code: 401
+{ "error": "authentication required or invalid" } 
 ```
 
 ### Actual
